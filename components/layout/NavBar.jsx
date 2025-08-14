@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Sparkles } from "lucide-react";
 import { brand } from "@/constants/brand";
 import { SkyToGlassButton, GlassToSkyButton }from "@/components/common/CustomButtons";
+import Link from "next/link";
 
 export default function NavBar() {
   return (
@@ -18,15 +19,17 @@ export default function NavBar() {
 
       </div>
       <div className="hidden items-center gap-6 md:flex">
-        <a className="text-sm text-white/80 hover:text-white transition" href="#hero">الرئيسية</a>
+        <Link className="text-sm text-white/80 hover:text-white transition" href={"/#hero"}>الرئيسية</Link>
         {/* <a className="text-sm text-white/80 hover:text-white transition" href="#values">قيمنا</a> */}
-        <a className="text-sm text-white/80 hover:text-white transition" href="#about-values">من نحن</a>
-        <a className="text-sm text-white/80 hover:text-white transition" href="#what">ما نقوم به</a>
-        <a className="text-sm text-white/80 hover:text-white transition" href="#partners">شركاؤنا</a>
+        <Link className="text-sm text-white/80 hover:text-white transition" href={"/#about-values"}>من نحن</Link>
+        <Link className="text-sm text-white/80 hover:text-white transition" href={"/#what"}>ما نقوم به</Link>
+        <Link className="text-sm text-white/80 hover:text-white transition" href={"/#partners"}>شركاؤنا</Link>
       </div>
       <div className="flex items-center gap-2">
         {/* <Button className="rounded-2xl border border-white/20 bg-white/10 text-white hover:bg-white/20">دخول</Button> */}
-        <SkyToGlassButton> تواصل معنا</SkyToGlassButton>
+        <Link href={"/contact"}>
+          <SkyToGlassButton> تواصل معنا</SkyToGlassButton>
+        </Link>
       </div>
     </nav>
   );
