@@ -11,21 +11,23 @@ import Partners from "@/components/sections/Partners";
 import Footer from "@/components/layout/Footer";
 import NetBG from "@/components/common/NetBG";
 import AboutValuesSection from "@/components/sections/AboutValuesSection";
+import HeroParticles from "@/components/bg/HeroParticles";
 
 export default function LandingPage() {
   return (
-    <main className="min-h-screen w-full text-white" style={{ backgroundColor: brand.navy }}>
+    <main>
       <style>{`:root{--sky:${brand.sky};--navy:${brand.navy};}`}</style>
       <div className="relative">
-              <NetBG
-                points={90}
-                linkDistance={150}
-                speed={0.4}
-                nodeSize={2}
-                nodeColor="#ff4db8"
-                lineColor="#ff4db8"
-                lineMaxOpacity={0.35}
-              />
+  
+        <NetBG
+          points={100}
+          linkDistance={150}
+          speed={0.4}
+          nodeSize={2}
+          nodeColor="#ff4db8"
+          lineColor="#ff4db8"
+          lineMaxOpacity={0.80}
+        />
         <Hero />
         {/* <Services /> */}
         {/* <Values />
@@ -33,7 +35,7 @@ export default function LandingPage() {
         <AboutValuesSection />
         <WhatWeDo />
         <Partners />
-        <Footer />
+        {/* <Footer /> */}
       </div>
     </main>
   );

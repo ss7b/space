@@ -5,8 +5,8 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Shield, Sparkles } from "lucide-react";
 import { brand } from "@/constants/brand";
-import TechBgSVG from "../common/TechBgSVG";
-import HeroParticles from "@/components/common/HeroParticles";
+import TechBgSVG from "@/components/bg/TechBgSVG";
+import HeroParticles from "@/components/bg/HeroParticles";
 import NavBar from "../layout/NavBar";
 import NetBG from "@/components/common/NetBG";
 
@@ -14,16 +14,6 @@ export default function Hero() {
   return (
     <section id="hero" className="relative min-h-[100vh] flex items-center justify-center">
       <TechBgSVG />
-      {/* <HeroParticles /> */}
-      <NetBG
-        points={90}
-        linkDistance={150}
-        speed={0.4}
-        nodeSize={2}
-        nodeColor="#ff4db8"
-        lineColor="#ff4db8"
-        lineMaxOpacity={0.35}
-      />
       <div className="relative z-10 w-full">
 
         <div className="mx-auto mt-14 flex w-[92%] max-w-7xl flex-col items-center text-center" dir="rtl">

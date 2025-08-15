@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { brand } from "@/constants/brand";
 import HexGridBackground from "@/components/bg/HexGridBackground";
+import Link from "next/link";
 
 export default function Footer() {
   return (
@@ -24,7 +25,7 @@ export default function Footer() {
     >
        {/* الخلفية السداسية مع الوميض */}
       <HexGridBackground
-        className="pointer-events-none absolute inset-0 -z-10 opacity-70"
+        className="pointer-events-none absolute inset-0 -z-10 opacity-70 h-full"
         cell={100}                 // كبر/صغّر الخلية
         stroke={brand.sky}        // لون الخطوط
         strokeOpacity={0.10}      // شفافية الخطوط
@@ -46,7 +47,9 @@ export default function Footer() {
                 <Sparkles className="h-6 w-6" color={brand.white} />
               </div> */}
               {/*  لوجو الشركة */}
-              <img src="/logo.png" alt="Nahil Logo" className="h-15 w-auto" />
+              <Link href="/">
+                <img src="/logo.png" alt="Nahil Logo" className="h-20 w-auto" />
+              </Link>
             </div>
           </div>
 

@@ -21,10 +21,13 @@ export default function WhatWeDo() {
   const pathRef = useRef(null);
   const [points, setPoints] = useState([]);
 
-  // ثوابت موضع الأيقونة والبطاقة
-  const ICON_SIZE = 56;   // قطر دائرة الأيقونة
-  const CARD_GAP  = 30;   // بعد البطاقة أسفل الخط
+  // ثوابت
+  const ICON_SIZE = 56;
+  const CARD_GAP  = 30;
+  const MOBILE_CARD_OFFSET = ICON_SIZE / 2 + 18;
+  const ease = [0.16, 1, 0.3, 1];
 
+  /* ===== نسخة الديسكتوب (تبقى أفقية) ===== */
   useEffect(() => {
     const svg = svgRef.current;
     const path = pathRef.current;
@@ -37,11 +40,11 @@ export default function WhatWeDo() {
       const scaleX = svg.clientWidth / vbW;
       const scaleY = svg.clientHeight / vbH;
       const L = path.getTotalLength();
-      const margin = 0.06; // يترك 6% من الطول في البداية والنهاية
+      const margin = 0.06;
       const out = [];
 
       for (let i = 0; i < steps.length; i++) {
-        const t = margin + ((i + 0.5) / steps.length) * (1 - 2 * margin); // منتصف كل جزء
+        const t = margin + ((i + 0.5) / steps.length) * (1 - 2 * margin);
         const p = path.getPointAtLength(L * t);
         out.push({ x: p.x * scaleX, y: p.y * scaleY });
       }
@@ -53,14 +56,58 @@ export default function WhatWeDo() {
     return () => window.removeEventListener('resize', calcPoints);
   }, [steps.length]);
 
-  const ease = [0.16, 1, 0.3, 1];
-
   return (
     <section id="what" className="relative mx-auto w-[92%] max-w-7xl py-16" dir="rtl">
       <SectionTitle style={{ marginBottom: '0' }} title="ما نقوم به" subtitle="خدماتنا" />
 
-      {/* قللنا المسافة بين العنوان والتايملاين */}
-      <div className="relative mx-auto h-[380px] w-full overflow-visible">
+      {/* ====== موبايل/متوسط: تايملاين عمودي ====== */}
+      <div className="lg:hidden relative mx-auto mt-6 w-full">
+        {/* خط عمودي في المنتصف */}
+        <div className="pointer-events-none absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-gradient-to-b from-white/0 via-white/40 to-white/0" />
+
+        <ul className="flex flex-col gap-10">
+          {steps.map((s, i) => {
+            const Icon = s.icon;
+            const rightSide = i % 2 === 0;
+
+            return (
+              <li key={i} className="relative">
+                {/* الأيقونة على الخط */}
+                <div
+                  className="absolute left-1/2 top-3 z-10 flex -translate-x-1/2 items-center justify-center rounded-full border border-white/15 bg-white/10 backdrop-blur-xl"
+                  style={{ width: ICON_SIZE, height: ICON_SIZE }}
+                >
+                  <Icon className="h-6 w-6 text-white" />
+                </div>
+
+                {/* وصلة أفقية من الخط للبطاقة */}
+                <span
+                  className={`absolute h-[2px] w-7 bg-white/30 ${rightSide ? 'right-1/2 -mr-3.5' : 'left-1/2 -ml-3.5'}`}
+                  style={{ top: ICON_SIZE + 14 }}
+                />
+
+                {/* البطاقة */}
+                <div className={`flex ${rightSide ? 'justify-end pr-6' : 'justify-start pl-6'}`}>
+                  <motion.div
+                    initial={{ opacity: 0, y: 8, x: rightSide ? 40 : -40 }}
+                    whileInView={{ opacity: 1, y: 0, x: 0 }}
+                    viewport={{ once: true, amount: 0.35 }}
+                    transition={{ duration: 0.45, ease }}
+                    className="w-[85%] max-w-[520px] rounded-2xl border border-white/10 bg-white/[0.04] px-5 py-4 text-right shadow-sm backdrop-blur"
+                    style={{ marginTop: MOBILE_CARD_OFFSET }}
+                  >
+                    <h3 className="text-base font-bold text-white">{s.title}</h3>
+                    <p className="mt-1 text-[13px] leading-6 text-white/70">{s.desc}</p>
+                  </motion.div>
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+
+      {/* ====== ديسكتوب: المسار الدخاني الأفقي ====== */}
+      <div className="relative mx-auto h-[380px] w-full overflow-visible hidden lg:block">
         <motion.svg
           ref={svgRef}
           className="absolute inset-0"
@@ -70,30 +117,23 @@ export default function WhatWeDo() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true, amount: 0.4 }}
         >
-          {/* ====== التعريفات لعمل الدخان ====== */}
           <defs>
-            {/* تلاشي على الأطراف */}
             <linearGradient id="fadeStroke" x1="0%" y1="0%" x2="100%" y2="0%">
               <stop offset="0%" stopColor="white" stopOpacity="0" />
               <stop offset="12%" stopColor="white" stopOpacity="0.35" />
               <stop offset="88%" stopColor="white" stopOpacity="0.35" />
               <stop offset="100%" stopColor="white" stopOpacity="0" />
             </linearGradient>
-
-            {/* تشوّه + Blur خفيف ليبدو مثل الدخان */}
             <filter id="smokeFilter" x="-10%" y="-40%" width="120%" height="180%">
               <feTurbulence type="fractalNoise" baseFrequency="0.008" numOctaves="2" seed="7" />
               <feDisplacementMap in="SourceGraphic" scale="6" />
               <feGaussianBlur stdDeviation="1.4" />
             </filter>
-
-            {/* Blur أوسع لطبقة خلفية */}
             <filter id="softBlur" x="-20%" y="-40%" width="140%" height="180%">
               <feGaussianBlur stdDeviation="6" />
             </filter>
           </defs>
 
-          {/* مسار أساسي (مخفي) نستخدمه لحساب النقاط */}
           <motion.path
             ref={pathRef}
             d="M20,240 C240,120 480,280 720,200 C960,120 1200,240 1420,180"
@@ -101,7 +141,6 @@ export default function WhatWeDo() {
             stroke="transparent"
           />
 
-          {/* طبقة دخان خلفية عريضة وناعمة */}
           <motion.path
             d="M20,240 C240,120 480,280 720,200 C960,120 1200,240 1420,180"
             fill="none"
@@ -113,8 +152,6 @@ export default function WhatWeDo() {
             whileInView={{ pathLength: 1, opacity: 1 }}
             transition={{ duration: 1.8, ease }}
           />
-
-          {/* طبقة دخان رئيسية مع تلاشي وتشوه بسيط */}
           <motion.path
             d="M20,240 C240,120 480,280 720,200 C960,120 1200,240 1420,180"
             fill="none"
@@ -128,7 +165,6 @@ export default function WhatWeDo() {
             transition={{ duration: 2.2, ease }}
           />
 
-          {/* نقاط دخان خفيفة متناثرة فوق المسار */}
           {[...Array(18)].map((_, i) => (
             <motion.circle
               key={i}
@@ -152,24 +188,8 @@ export default function WhatWeDo() {
             </motion.circle>
           ))}
 
-          {/* الصاروخ في نهاية المسار */}
-          <motion.g
-            initial={{ opacity: 0, x: 12 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, ease }}
-          >
+          <motion.g initial={{ opacity: 0, x: 12 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.6, ease }}>
             <g transform="translate(1380,160)">
-              <motion.div
-                initial={{ y: 0, scale: 1 }}
-                animate={{ y: [-5, 5, -5], scale: [1, 1.08, 1] }}
-                transition={{
-                  duration: 0.8,
-                  ease: 'easeInOut',
-                  repeat: Infinity,
-                  repeatType: 'mirror'
-                }}
-                style={{ width: 0, height: 0 }}
-              />
               <Rocket width={45} height={45} color="rgba(255,255,255,0.95)" />
             </g>
           </motion.g>
@@ -178,18 +198,11 @@ export default function WhatWeDo() {
         {points.map((p, i) => {
           const S = steps[i];
           const Icon = S.icon;
-
           return (
             <div key={i}>
-              {/* الأيقونة في وسط الدخان */}
               <motion.div
                 className="pointer-events-none absolute z-10 flex -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-white/15 bg-white/10 backdrop-blur-xl"
-                style={{
-                  left: p.x,
-                  top: p.y,
-                  width: ICON_SIZE,
-                  height: ICON_SIZE,
-                }}
+                style={{ left: p.x, top: p.y, width: ICON_SIZE, height: ICON_SIZE }}
                 initial={{ opacity: 0, y: 18, scale: 0.9 }}
                 whileInView={{ opacity: 1, y: 0, scale: 1 }}
                 viewport={{ once: true, amount: 0.3 }}
@@ -199,7 +212,6 @@ export default function WhatWeDo() {
                 <Icon className="h-6 w-6 text-white" />
               </motion.div>
 
-              {/* التفاصيل أسفل المسار */}
               <motion.div
                 className="absolute w-[220px] -translate-x-1/2"
                 style={{ left: p.x, top: p.y + CARD_GAP }}
