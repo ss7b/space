@@ -3,6 +3,7 @@
 import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "../ui/button";
+import RichTextRenderer from "./RichTextRenderer";
 // import { Button } from "@/components/ui/button"; // اختياري
 
 export default function ServiceCard({ title, desc, icon: Icon }) {
@@ -22,10 +23,10 @@ export default function ServiceCard({ title, desc, icon: Icon }) {
         {/* العنوان */}
         <h3 className="text-lg font-bold text-white">{title}</h3>
 
-        {/* الوصف — تثبيت الارتفاع + قص لثلاثة أسطر إن توفّر البلجن */}
-        <p className="mt-2 text-sm text-white/70 line-clamp-3 min-h-[3.5rem]">
-          {desc}
-        </p>
+        <RichTextRenderer
+          className="mt-2 text-sm text-white/70 min-h-[3.5rem]"
+          blocks={desc}  
+        />
 
         {/* زر اختياري مع push لأسفل لو احتجت */}
         {/* <div className="mt-4">

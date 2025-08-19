@@ -51,7 +51,7 @@ export default function WhatWeDoBlock({ section_title, section_subtitle, steps =
                 </div>
                 <span className={`absolute h-[2px] w-7 bg-white/30 ${rightSide ? 'right-1/2 -mr-3.5' : 'left-1/2 -ml-3.5'}`} style={{ top: ICON_SIZE + 14 }} />
                 <div className={`flex ${rightSide ? 'justify-end pr-6' : 'justify-start pl-6'}`}>
-                  <motion.div initial={{ opacity: 0, y: 8, x: rightSide ? 40 : -40 }} whileInView={{ opacity: 1, y: 0, x: 0 }} viewport={{ once: true, amount: 0.35 }} transition={{ duration: 0.45, ease }} className="w-[85%] max-w-[520px] rounded-2xl border border-white/10 bg-white/[0.04] px-5 py-4 text-right shadow-sm backdrop-blur" style={{ marginTop: ICON_SIZE/2 + 18 }}>
+                  <motion.div initial={{ opacity: 0, y: 8, x: rightSide ? 40 : -40 }} whileInView={{ opacity: 1, y: 0, x: 0 }} viewport={{ once: true, amount: 0.35 }} transition={{ duration: 0.45, ease }} className="w-[85%] max-w-[520px] max-h-[200px] rounded-2xl border border-white/10 bg-white/[0.04] px-5 py-4 text-right shadow-sm backdrop-blur" style={{ marginTop: ICON_SIZE/2 + 18 }}>
                     <h3 className="text-base font-bold text-white">{s.title}</h3>
                     <p className="mt-1 text-[13px] leading-6 text-white/70">{s.desc}</p>
                   </motion.div>
@@ -103,7 +103,7 @@ export default function WhatWeDoBlock({ section_title, section_subtitle, steps =
                 <Icon className="h-6 w-6 text-white" />
               </motion.div>
 
-              <motion.div className="absolute w-[220px] -translate-x-1/2" style={{ left: p.x, top: p.y + CARD_GAP }} initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.25 }} transition={{ duration: 0.8, delay: 0.12 * i + 0.05, ease }}>
+              <motion.div className="absolute w-[220px] max-h-[200px] -translate-x-1/2" style={{ left: p.x, top: p.y + CARD_GAP }} initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.25 }} transition={{ duration: 0.8, delay: 0.12 * i + 0.05, ease }}>
                 <div className="px-4 py-4 text-center">
                   <h3 className="text-base font-bold text-white">{s?.title}</h3>
                   <p className="mt-1 text-[13px] leading-6 text-white/70">{s?.desc}</p>

@@ -41,15 +41,6 @@ export async function getPageByPath(path) {
             populate: { steps: { fields: ['icon_name','title','desc'] } },
           },
 
-          [ABOUT_UID]: {
-            fields: [
-              'section_title','section_subtitle',
-              'about_title','about_paragraph',
-              'button_text','button_link',
-            ],
-            populate: { right_image: true, values: true },
-          },
-
           // ✅ القيم الزجاجية: الصورة + عناصر فيها desc (Rich Text Blocks)
           [VALUES_UID]: {
             fields: ['section_title','section_subtitle'],
@@ -59,9 +50,11 @@ export async function getPageByPath(path) {
             },
           },
 
-          // ✅ عن الشركة (غلاسّي): العنوان + المحتوى + الصورة
-          // لو خزّنت المحتوى كـ Blocks استخدم 'content'
-          // ولو حولته إلى HTML احفظه بحقل content_html
+          [ABOUT_RICH_UID]: {
+            fields: ['title','content'], 
+            populate: { image: true },
+          },
+
           [ABOUT_UID]: {
             fields: [
               'section_title','section_subtitle',
