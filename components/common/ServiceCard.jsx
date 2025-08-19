@@ -2,6 +2,7 @@
 
 import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "../ui/button";
 // import { Button } from "@/components/ui/button"; // اختياري
 
 export default function ServiceCard({ title, desc, icon: Icon }) {
