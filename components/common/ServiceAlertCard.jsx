@@ -16,6 +16,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
+import { GlassToSkyButton, SkyToGlassButton } from './CustomButtons';
 
 // نفس fetchServiceBySlug زي قبل...
 
@@ -67,9 +68,9 @@ export default function ServiceAlertCard({ service }) {
           {current.excerpt && (
             <p className="mt-1 line-clamp-2 text-sm text-white/70">{current.excerpt}</p>
           )}
-          <div className="mt-3 inline-flex items-center gap-1 text-sm text-white/80">
+          {/* <div className="mt-3 inline-flex items-center gap-1 text-sm text-white/80">
             <span>التفاصيل</span>
-          </div>
+          </div> */}
         </button>
       </AlertDialogTrigger>
 
@@ -110,9 +111,8 @@ export default function ServiceAlertCard({ service }) {
           <AlertDialogAction asChild>
             <Link
               href="/contact"
-              className="items-center justify-center rounded-md bg-white/20 px-4 py-2 text-sm font-medium text-white hover:bg-white/30"
             >
-              تواصل معنا
+              <GlassToSkyButton>تواصل معنا</GlassToSkyButton>
             </Link>
           </AlertDialogAction>
         </AlertDialogFooter>

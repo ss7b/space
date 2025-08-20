@@ -8,6 +8,7 @@ import { brand } from "@/constants/brand";
 import { getIconByName } from "@/components/utils/iconMap";
 import RichTextRenderer from "../common/RichTextRenderer";
 import ServiceCard from "@/components/common/ServiceCard";
+import { SkyToGlassButton } from "../common/CustomButtons";
 
 
 const easeOutExpo = [0.16, 1, 0.3, 1];
@@ -64,9 +65,7 @@ export default function AboutValuesBlock({
           {button_text && (
             <motion.div className="mt-6" variants={textItem}>
               <a href={button_link || "#"}>
-                <Button className="rounded-xl px-6 py-2" style={{ backgroundColor: brand.sky, color: brand.navy }}>
-                  {button_text}
-                </Button>
+                <SkyToGlassButton > {button_text}</SkyToGlassButton>
               </a>
             </motion.div>
           )}

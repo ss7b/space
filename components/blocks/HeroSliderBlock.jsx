@@ -5,14 +5,13 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation, Pagination, A11y } from "swiper/modules";
-import { Button } from "@/components/ui/button";
-import { brand } from "@/constants/brand";
-import RichTextRenderer from "@/components/common/RichTextRenderer"; // 👈 استيراد
+import RichTextRenderer from "@/components/common/RichTextRenderer"; 
 
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import TechBgSVG from "../bg/TechBgSVG";
+import { SkyToGlassButton } from "../common/CustomButtons";
 
 const ease = [0.16, 1, 0.3, 1];
 
@@ -91,13 +90,7 @@ export default function HeroSliderBlock({
                     {s.cta_text && (
                       <div className="mt-7">
                         <a href={s.cta_link || "#"}>
-                          <Button
-                            size="lg"
-                            className="rounded-2xl px-7 text-base shadow-lg ring-1 ring-white/20"
-                            style={{ backgroundColor: brand.sky, color: brand.navy }}
-                          >
-                            {s.cta_text}
-                          </Button>
+                          <SkyToGlassButton>{s.cta_text}</SkyToGlassButton>
                         </a>
                       </div>
                     )}
