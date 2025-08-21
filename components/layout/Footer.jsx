@@ -2,14 +2,10 @@
 
 import React from 'react';
 import Link from 'next/link';
-import {
-  MapPin, Phone, Mail, Printer,
-  Facebook, Twitter, Instagram, Linkedin,
-} from 'lucide-react';
+import { MapPin, Phone, Mail, Printer } from 'lucide-react';
 import { brand } from '@/constants/brand';
 import HexGridBackground from '@/components/bg/HexGridBackground';
-
-const iconMap = { facebook: Facebook, twitter: Twitter, instagram: Instagram, linkedin: Linkedin };
+import { getIconByName } from '@/components/utils/iconMap';
 
 // تصحيح الروابط لو بعضها بدون سلاش
 const fixHref = (u) => {
@@ -33,12 +29,16 @@ export default function Footer({ data = {} }) {
   const localLogoSrc = '/logo.png'; // نستخدم اللوجو المحلي (جودة أفضل)
 
   return (
-    <footer id="contact" dir="rtl" className="relative mt-10 border-t border-white/10 bg-white/0 backdrop-blur-lg">
+    <footer
+      id="contact"
+      dir="rtl"
+      className="relative mt-10 border-t border-white/10 bg-white/0 backdrop-blur-lg"
+    >
       <HexGridBackground
-        className="pointer-events-none absolute inset-0 -z-10 opacity-70 h-full"
+        className="pointer-events-none absolute inset-0 -z-10 h-full opacity-70"
         cell={100}
         stroke={brand.sky}
-        strokeOpacity={0.10}
+        strokeOpacity={0.1}
         dot={brand.navy}
         dotOpacity={0.9}
       />
@@ -49,7 +49,9 @@ export default function Footer({ data = {} }) {
           <div>
             <h3 className="text-lg font-bold text-white/90">عن الشركة</h3>
             {about_text && (
-              <p className="mt-2 max-w-prose leading-relaxed text-white/70">{about_text}</p>
+              <p className="mt-2 max-w-prose leading-relaxed text-white/70">
+                {about_text}
+              </p>
             )}
             <div className="mt-4">
               <Link href="/">
@@ -76,10 +78,30 @@ export default function Footer({ data = {} }) {
           <div>
             <h3 className="text-lg font-bold text-white/90">معلومات التواصل</h3>
             <ul className="mt-3 space-y-3 text-white/70">
-              {address && <li className="flex items-start gap-2"><MapPin className="h-5 w-5" />{address}</li>}
-              {phone &&   <li className="flex items-center gap-2"><Phone className="h-5 w-5" /><a href={`tel:${phone}`}>{phone}</a></li>}
-              {fax &&     <li className="flex items-center gap-2"><Printer className="h-5 w-5" />{fax}</li>}
-              {email &&   <li className="flex items-center gap-2"><Mail className="h-5 w-5" /><a href={`mailto:${email}`}>{email}</a></li>}
+              {address && (
+                <li className="flex items-start gap-2">
+                  <MapPin className="h-5 w-5" />
+                  {address}
+                </li>
+              )}
+              {phone && (
+                <li className="flex items-center gap-2">
+                  <Phone className="h-5 w-5" />
+                  <a href={`tel:${phone}`}>{phone}</a>
+                </li>
+              )}
+              {fax && (
+                <li className="flex items-center gap-2">
+                  <Printer className="h-5 w-5" />
+                  {fax}
+                </li>
+              )}
+              {email && (
+                <li className="flex items-center gap-2">
+                  <Mail className="h-5 w-5" />
+                  <a href={`mailto:${email}`}>{email}</a>
+                </li>
+              )}
             </ul>
           </div>
         </div>
@@ -88,21 +110,25 @@ export default function Footer({ data = {} }) {
         <div className="mt-10 flex flex-col items-start justify-between gap-4 border-t border-white/10 pt-6 md:flex-row md:items-center">
           <div className="flex gap-3">
             {socials.map((s) => {
-              const Icon = iconMap[s.platform] || Facebook;
+              // اسم المنصّة ممكن يكون "facebook" أو "Facebook" أو "user-check"… الدالة تتكفّل بالتحويل
+              const Icon = getIconByName(s.platform, 'Facebook'); // fallback لأي اسم غير معروف
               return (
                 <a
                   key={s.id ?? s.url}
                   href={fixHref(s.url)}
                   aria-label={s.platform || 'social'}
                   className="rounded-full border border-white/20 p-2 hover:bg-white/10"
-                  target="_blank" rel="noopener noreferrer"
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
-                  <Icon className="h-4 w-4" />
+                  <Icon size={16} className="h-4 w-4" />
                 </a>
               );
             })}
           </div>
-          <p className="text-sm text-white/70">© {new Date().getFullYear()} جميع الحقوق محفوظة.</p>
+          <p className="text-sm text-white/70">
+            © {new Date().getFullYear()} جميع الحقوق محفوظة.
+          </p>
         </div>
       </div>
     </footer>
