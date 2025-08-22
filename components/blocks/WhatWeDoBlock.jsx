@@ -1,8 +1,9 @@
 "use client";
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import SectionTitle from '@/components/common/SectionTitle';
 import { getIconByName } from '@/components/utils/iconMap';
+import useLang from '@/components/utils/useLang';
 
 export default function WhatWeDoBlock({ section_title, section_subtitle, steps = [] }) {
   const svgRef = useRef(null);
@@ -12,8 +13,8 @@ export default function WhatWeDoBlock({ section_title, section_subtitle, steps =
   const ICON_SIZE = 56;
   const CARD_GAP = 30;
   const ease = [0.16, 1, 0.3, 1];
+  const { isRTL, dir } = useLang();
 
-  // حساب نقاط المسار للديسكتوبa
   useEffect(() => {
     const svg = svgRef.current;
     const path = pathRef.current;
@@ -34,10 +35,10 @@ export default function WhatWeDoBlock({ section_title, section_subtitle, steps =
   }, [steps.length]);
 
   return (
-    <section id="what" className="relative mx-auto w-[92%] max-w-7xl py-16" dir="rtl">
+    <section id="what" className="relative mx-auto w-[92%] max-w-7xl py-16" dir={dir}>
       <SectionTitle style={{ marginBottom: '0' }} title={section_title} subtitle={section_subtitle} />
 
-      {/* موبايل/تابلت: عمودي متناوب */}
+      {/* موبايل/تابلت */}
       <div className="lg:hidden relative mx-auto mt-6 w-full">
         <div className="pointer-events-none absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-gradient-to-b from-white/0 via-white/40 to-white/0" />
         <ul className="flex flex-col gap-10">
@@ -62,11 +63,11 @@ export default function WhatWeDoBlock({ section_title, section_subtitle, steps =
         </ul>
       </div>
 
-      {/* ديسكتوب: مسار دخاني أفقي */}
+      {/* ديسكتوب */}
       <div className="relative mx-auto h-[380px] w-full overflow-visible hidden lg:block">
         <motion.svg ref={svgRef} className="absolute inset-0" viewBox="0 0 1440 320" preserveAspectRatio="none" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true, amount: 0.4 }}>
           <defs>
-            <linearGradient id="fadeStroke" x1="0%" y1="0%" x2="100%" y2="0%">
+            <linearGradient id="fadeStroke" x1="0%" y1="0%" x2="100%">
               <stop offset="0%" stopColor="white" stopOpacity="0" />
               <stop offset="12%" stopColor="white" stopOpacity="0.35" />
               <stop offset="88%" stopColor="white" stopOpacity="0.35" />
@@ -83,7 +84,6 @@ export default function WhatWeDoBlock({ section_title, section_subtitle, steps =
           </defs>
 
           <motion.path ref={pathRef} d="M20,240 C240,120 480,280 720,200 C960,120 1200,240 1420,180" fill="none" stroke="transparent" />
-
           <motion.path d="M20,240 C240,120 480,280 720,200 C960,120 1200,240 1420,180" fill="none" stroke="rgba(255,255,255,0.12)" strokeWidth="16" strokeLinecap="round" filter="url(#softBlur)" initial={{ pathLength: 0, opacity: 0 }} whileInView={{ pathLength: 1, opacity: 1 }} transition={{ duration: 1.8, ease }} />
           <motion.path d="M20,240 C240,120 480,280 720,200 C960,120 1200,240 1420,180" fill="none" stroke="url(#fadeStroke)" strokeWidth="6" strokeLinecap="round" filter="url(#smokeFilter)" strokeDasharray="3 18" initial={{ pathLength: 0, strokeDashoffset: 60 }} whileInView={{ pathLength: 1, strokeDashoffset: 0 }} transition={{ duration: 2.2, ease }} />
 

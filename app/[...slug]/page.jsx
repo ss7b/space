@@ -3,8 +3,9 @@ import { notFound } from 'next/navigation';
 import { strapiFetch, buildQuery } from '@/lib/strapi';
 import { seoToNextMetadata } from '@/lib/seo';
 import BlockRenderer from '@/components/blocks/BlockRenderer';
+import { cookies } from 'next/headers';
 
-export async function getPageByPath(path) {
+export async function getPageByPath(path, locale = 'ar') {
   const DZ_FIELD        = 'blocks';
   const HERO_UID        = 'section.hero-section';
   const HERO_SLIDER_UID = 'section.hero-slider';
@@ -14,7 +15,7 @@ export async function getPageByPath(path) {
   const VALUES_UID      = 'section.values-glassy';
   const ABOUT_RICH_UID  = 'section.about-rich-glassy';
   const PARTNERS_UID    = 'section.partners-marquee';
-  const SERVICES_UID = 'section.services-grid';
+  const SERVICES_UID    = 'section.services-grid';
 
   const query = buildQuery({
     filters: { slug: { $eq: path || 'home' } },
@@ -31,30 +32,17 @@ export async function getPageByPath(path) {
               'badge_text',
             ],
           },
-          [HERO_SLIDER_UID]: {
-            populate: { slides: { populate: { image: true } } },
-          },
+          [HERO_SLIDER_UID]: { populate: { slides: { populate: { image: true } } } },
           [HERO_SIMPLE_UID]: { populate: { background_image: true } },
-
           [WHAT_UID]: {
             fields: ['section_title','section_subtitle'],
             populate: { steps: { fields: ['icon_name','title','desc'] } },
           },
-
-          // ✅ القيم الزجاجية: الصورة + عناصر فيها desc (Rich Text Blocks)
           [VALUES_UID]: {
             fields: ['section_title','section_subtitle'],
-            populate: {
-              image: true,
-              items: { fields: ['icon_name','title','desc'] },
-            },
+            populate: { image: true, items: { fields: ['icon_name','title','desc'] } },
           },
-
-          [ABOUT_RICH_UID]: {
-            fields: ['title','content'], 
-            populate: { image: true },
-          },
-
+          [ABOUT_RICH_UID]: { fields: ['title','content'], populate: { image: true } },
           [ABOUT_UID]: {
             fields: [
               'section_title','section_subtitle',
@@ -63,19 +51,16 @@ export async function getPageByPath(path) {
             ],
             populate: {
               right_image: { fields: ['url','alternativeText'] },
-              values: { fields: ['icon_name','title','desc'] }, // لو desc=Blocks يكفي كذا
+              values: { fields: ['icon_name','title','desc'] },
               mission_items: { fields: ['text'] },
             },
           },
-
-          [PARTNERS_UID]: {
-            populate: { partners: { populate: { logo: true } } },
-          },
+          [PARTNERS_UID]: { populate: { partners: { populate: { logo: true } } } },
           [SERVICES_UID]: {
             fields: ['section_title','section_subtitle','cta_text','cta_link','show_all','limit'],
             populate: {
               services: {
-                fields: ['title','slug','excerpt', 'content'],
+                fields: ['title','slug','excerpt','content'],
                 populate: { cover: { fields: ['url','alternativeText'] } },
               },
             },
@@ -86,19 +71,26 @@ export async function getPageByPath(path) {
     pagination: { pageSize: 1 },
   });
 
-  const data = await strapiFetch('/api/pages', { query, revalidate: 60, nextTags: ['pages'] });
+  const data = await strapiFetch('/api/pages', {
+    query,
+    locale,                 // <-- مهم
+    revalidate: 60,
+    nextTags: ['pages'],
+  });
+
   const item = data?.data?.[0];
   if (!item) return null;
+
   const { title, slug, seo, [DZ_FIELD]: blocks } = item;
   return { title, slug, seo, blocks };
 }
 
-// ✅ Next 15: انتظر params قبل الاستخدام
 export async function generateMetadata({ params }) {
   const p = await params;
   const segs = p?.slug;
   const slug = Array.isArray(segs) ? segs.join('/') : 'home';
-  const page = await getPageByPath(slug);
+  const locale = cookies().get('lang')?.value ?? 'ar';
+  const page = await getPageByPath(slug, locale);
   if (!page) return {};
   return seoToNextMetadata({ page, siteName: 'Hotsniq' });
 }
@@ -107,11 +99,12 @@ export default async function Page({ params }) {
   const p = await params;
   const segs = p?.slug;
   const slug = Array.isArray(segs) ? segs.join('/') : 'home';
-  const page = await getPageByPath(slug);
+  const locale = cookies().get('lang')?.value ?? 'ar';
+  const page = await getPageByPath(slug, locale);
   if (!page) return notFound();
 
   return (
-    <main dir="rtl">
+    <main dir={locale === 'ar' ? 'rtl' : 'ltr'}>
       <BlockRenderer blocks={page.blocks || []} />
     </main>
   );

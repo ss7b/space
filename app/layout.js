@@ -6,6 +6,7 @@ import Footer from '@/components/layout/Footer';
 import { brand } from '@/constants/brand';
 import { getGlobal } from '@/lib/global';
 import GlobalBG from '@/components/layout/GlobalBG';
+import { cookies } from 'next/headers';
 
 const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] });
 const geistMono = Geist_Mono({ variable: '--font-geist-mono', subsets: ['latin'] });
@@ -16,8 +17,8 @@ export const metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'),
   icons: {
     icon: [
-      { url: '/favicon.png' },               // افتراضي
-      { url: '/favicon.png', sizes: '32x32' } // للمتصفحات التي تتحقق من المقاس
+      { url: '/favicon.png' },
+      { url: '/favicon.png', sizes: '32x32' }
     ],
     shortcut: ['/favicon.png'],
     apple: [{ url: '/favicon.png', sizes: '180x180' }],
@@ -25,11 +26,13 @@ export const metadata = {
 };
 
 export default async function RootLayout({ children }) {
+  const locale = cookies().get('lang')?.value ?? 'ar';
+
   let headerLinks = [];
   let footerData = {};
 
   try {
-    const g = await getGlobal();
+    const g = await getGlobal(locale);
     headerLinks = g.headerLinks || [];
     footerData  = g.footerData || {};
   } catch {
@@ -38,7 +41,7 @@ export default async function RootLayout({ children }) {
   }
 
   return (
-    <html lang="ar" dir="rtl">
+    <html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'}>
       <body
         className={`${geistSans.variable} ${geistMono.variable} min-h-screen w-full text-white`}
         style={{ backgroundColor: brand.navy }}

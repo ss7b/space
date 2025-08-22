@@ -1,4 +1,3 @@
-// components/blocks/BlockRenderer.jsx
 'use client';
 import React from 'react';
 import HeroBlock from './HeroBlock';
@@ -84,29 +83,27 @@ export default function BlockRenderer({ blocks = [] }) {
               />
             );
 
-          // ✅ القيم الزجاجية (صورة يسار + كروت يمين)
           case 'section.values-glassy':
             return (
               <ValuesGlassyBlock
                 key={i}
                 section_title={b.section_title}
                 section_subtitle={b.section_subtitle}
-                image={b.image}                   // فيه normalize داخلي
+                image={b.image}
                 items={(b.items || []).map(v => ({
                   icon_name: v.icon_name,
                   title: v.title,
-                  desc: v.desc,                    // Blocks كما هي
+                  desc: v.desc,
                 }))}
               />
             );
 
-          // ✅ عن الشركة (عنوان + RichText + صورة يسار)
           case 'section.about-rich-glassy':
             return (
               <AboutRichGlassyBlock
                 key={i}
                 title={b.title}
-                content={b.content} // يدعم HTML أو Blocks
+                content={b.content}
                 image={normalizeMedia(b.image)}
               />
             );
@@ -115,9 +112,9 @@ export default function BlockRenderer({ blocks = [] }) {
             const logos = (b.partners || [])
               .map(p => normalizeMedia(p?.logo?.[0]))
               .filter(Boolean);
-            return <PartnersBlock key={i} logos={logos} />;
+            return <PartnersBlock key={i} logos={logos} title={b.section_title} subtitle={b.section_subtitle} />;
           }
-          // components/blocks/BlockRenderer.jsx (داخل الـ switch)
+
           case 'section.services-grid':
             return (
               <ServicesGridBlock
@@ -126,13 +123,12 @@ export default function BlockRenderer({ blocks = [] }) {
                 section_subtitle={b.section_subtitle}
                 cta_text={b.cta_text}
                 cta_link={b.cta_link}
-                // جديد: من العلاقة والخيارات
                 services={Array.isArray(b.services) ? b.services : []}
                 show_all={!!b.show_all}
                 limit={b.limit ?? 24}
-                // items={b.items || []}
               />
             );
+
           default:
             return null;
         }

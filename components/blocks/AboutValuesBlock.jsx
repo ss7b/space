@@ -2,14 +2,13 @@
 import React from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
 import SectionTitle from "@/components/common/SectionTitle";
 import { brand } from "@/constants/brand";
 import { getIconByName } from "@/components/utils/iconMap";
 import RichTextRenderer from "../common/RichTextRenderer";
 import ServiceCard from "@/components/common/ServiceCard";
 import { SkyToGlassButton } from "../common/CustomButtons";
-
+import useLang from '@/components/utils/useLang';
 
 const easeOutExpo = [0.16, 1, 0.3, 1];
 const textContainer = { hidden: { opacity: 0, y: 24 }, show: { opacity: 1, y: 0, transition: { duration: 0.85, ease: easeOutExpo, staggerChildren: 0.18 } } };
@@ -22,25 +21,24 @@ export default function AboutValuesBlock({
   section_subtitle,
   about_title,
   about_paragraph,
-  mission_items = [], // [{ text }]
+  mission_items = [],
   button_text,
   button_link,
   right_image,
-  values = [], // [{ icon_name, title, desc }]
+  values = [],
 }) {
+  const { isRTL, dir } = useLang();
+
   return (
-    <section id="about-values" className="relative z-0 mx-auto w-[92%] max-w-7xl py-20" dir="rtl">
+    <section id="about-values" className="relative z-0 mx-auto w-[92%] max-w-7xl py-20" dir={dir}>
       <SectionTitle title={section_title} subtitle={section_subtitle} />
 
       <div className="grid items-center gap-10 md:grid-cols-2">
         <motion.div variants={textContainer} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.35 }}>
           <motion.div className="mb-4 flex items-center gap-2 text-white/90" variants={textItem}>
-            {/* عنوان فرعي أيقوني */}
-            {/* لو ودك أيقونة ديناميكية هنا، أضف حقل icon_name للقسم نفسه */}
             <h3 className="text-2xl font-extrabold tracking-tight text-white">{about_title}</h3>
           </motion.div>
 
-          
           {Array.isArray(about_paragraph) && about_paragraph.length > 0 && (
             <motion.div className="text-white/80" variants={textItem}>
               <RichTextRenderer blocks={about_paragraph} />
@@ -49,11 +47,10 @@ export default function AboutValuesBlock({
 
           {!!mission_items?.length && (
             <motion.div className="mt-6 grid gap-3" variants={textItem}>
-              <div className="text-white/90 font-semibold">مهمّتنا</div>
+              <div className="text-white/90 font-semibold">{isRTL ? 'مهمّتنا' : 'Our Mission'}</div>
               <ul className="space-y-2">
                 {mission_items.map((m, i) => (
                   <motion.li key={i} className="flex items-start gap-2 text-white/80" variants={textItem}>
-                    {/* استخدام أيقونة ثابتة مثل CheckCircle2 أو أضف icon_name لكل عنصر */}
                     <span className="mt-0.5 inline-flex h-5 w-5 items-center justify-center rounded-full border border-white/20 text-xs">✓</span>
                     <span>{m.text}</span>
                   </motion.li>
@@ -65,7 +62,7 @@ export default function AboutValuesBlock({
           {button_text && (
             <motion.div className="mt-6" variants={textItem}>
               <a href={button_link || "#"}>
-                <SkyToGlassButton > {button_text}</SkyToGlassButton>
+                <SkyToGlassButton>{button_text}</SkyToGlassButton>
               </a>
             </motion.div>
           )}
@@ -88,26 +85,11 @@ export default function AboutValuesBlock({
             {values.map((v, i) => {
               const Icon = getIconByName(v.icon_name);
               return (
-                <motion.div
-                  key={i}
-                  custom={i}
-                  variants={cardItem}
-                  initial="hidden"
-                  whileInView="show"
-                  viewport={{ once: true, amount: 0.2 }}
-                  whileHover={{ y: -6, transition: { duration: 0.2 } }}
-                  className="h-full"
-                >
-                  <ServiceCard
-                    title={v.title}
-                    desc={v.desc}
-                    icon={Icon}
-                    iconStyle={{ color: brand.sky }}
-                  />
+                <motion.div key={i} custom={i} variants={cardItem} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }} whileHover={{ y: -6, transition: { duration: 0.2 } }} className="h-full">
+                  <ServiceCard title={v.title} desc={v.desc} icon={Icon} iconStyle={{ color: brand.sky }} />
                 </motion.div>
               );
             })}
-
           </div>
         </div>
       )}
