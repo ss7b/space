@@ -64,7 +64,7 @@ export default function ServicesGridBlock({
     .map((s) => s?.attributes ?? s);
 
   return (
-    <section id="services" className="relative z-0 mx-auto w-[92%] max-w-7xl py-16" dir={dir}>
+    <section id="services-grid" className="relative z-0 mx-auto w-[92%] max-w-7xl py-16" dir={dir}>
       <motion.svg className="pointer-events-none absolute inset-0 -z-10" viewBox="0 0 1440 400" preserveAspectRatio="none" initial={{ opacity: 0.5 }} animate={{ opacity: [0.5, 0.8, 0.5] }} transition={{ duration: 8, repeat: Infinity }}>
         <path d="M0,200 C300,100 600,300 900,200 C1200,100 1500,300 1800,180" stroke="rgba(40,171,226,0.25)" strokeWidth="6" fill="none" />
         <path d="M0,260 C280,140 620,320 940,230 C1200,160 1500,260 1800,220" stroke="rgba(255,255,255,0.12)" strokeWidth="10" fill="none" />

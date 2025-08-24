@@ -23,6 +23,7 @@ export default function Footer({ data = {} }) {
 
   const {
     about_text = '',
+    title = '',
     address = '',
     phone = '',
     fax = '',
@@ -60,7 +61,9 @@ export default function Footer({ data = {} }) {
         <div className="grid grid-cols-1 gap-10 md:grid-cols-3">
           {/* عن الشركة */}
           <div>
-            <h3 className="text-lg font-bold text-white/90">{t.about}</h3>
+            {title && (
+              <h3 className="text-lg font-bold text-white/90">{title}</h3>
+            )}
             {about_text && (
               <p className="mt-2 max-w-prose leading-relaxed text-white/70">
                 {about_text}

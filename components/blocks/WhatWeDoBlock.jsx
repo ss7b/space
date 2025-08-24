@@ -35,7 +35,7 @@ export default function WhatWeDoBlock({ section_title, section_subtitle, steps =
   }, [steps.length]);
 
   return (
-    <section id="what" className="relative mx-auto w-[92%] max-w-7xl py-16" dir={dir}>
+    <section id="what-we-do" className="relative mx-auto w-[92%] max-w-7xl py-16" dir={dir}>
       <SectionTitle style={{ marginBottom: '0' }} title={section_title} subtitle={section_subtitle} />
 
       {/* موبايل/تابلت */}

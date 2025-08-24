@@ -14,7 +14,7 @@ export default function ValuesGlassyBlock({ section_title, section_subtitle, ima
   if (!section_title && !items?.length) return null;
 
   return (
-    <section id="about-values" className="relative mx-auto w-[92%] max-w-7xl py-16" dir={dir}>
+    <section id="values-glassy" className="relative mx-auto w-[92%] max-w-7xl py-16" dir={dir}>
       <div className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute right-10 top-16 h-72 w-72 rounded-full blur-3xl" style={{ background: `radial-gradient(circle, ${brand.sky}33, transparent 60%)` }} />
       </div>

@@ -12,7 +12,7 @@ export default function AboutRichGlassyBlock({ title, content, image }) {
   const { isRTL, dir } = useLang();
 
   return (
-    <section id="about-rich" className="relative mx-auto w-[92%] max-w-7xl py-16" dir={dir}>
+    <section id="About-rich-glassy" className="relative mx-auto w-[92%] max-w-7xl py-16" dir={dir}>
       <div className="grid items-center gap-8 lg:grid-cols-2">
         {img?.url && (
           <motion.div initial={{ opacity: 0, x: isRTL ? -24 : 24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.7 }} className={isRTL ? "order-2 lg:order-1" : "order-2 lg:order-2"}>
