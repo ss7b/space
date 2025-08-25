@@ -36,7 +36,7 @@ export default function Footer({ data = {} }) {
     about: lang === 'ar' ? 'عن الشركة' : 'About us',
     links: lang === 'ar' ? 'روابط' : 'Links',
     contact: lang === 'ar' ? 'معلومات التواصل' : 'Contact info',
-    rights: lang === 'ar' ? 'جميع الحقوق محفوظة.' : 'All rights reserved.',
+    rights: lang === 'ar' ? 'جميع الحقوق محفوظة سدن القمم للتقنية.' : 'All rights reserved to Sadan Al-Qimam Technology Categgory.',
     logoAlt: lang === 'ar' ? 'شعار الشركة' : 'Company Logo',
   };
 
